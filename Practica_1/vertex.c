@@ -105,23 +105,37 @@ Vertex *vertex_initFromString(char *descr)
     int i;
     Vertex *vertex;
 
+    /*Control error*/
     if (!descr || !(vertex = vertex_init()))
     {
         return NULL;
     }
 
-    while (token != NULL)
-    {
-    }
+    /*It took the first part of the string*/
     token = strtok(descr, ':');
-    token = strtok(NULL, ':');
-    vertex->id = atol(token);
-    token = strtok(NULL, ':');
-    token = strtok(NULL, ':');
-    strcpy(vertex->tag, token);
-    token = strtok(NULL, ':');
-    token = strtok(NULL, ':');
-    vertex->state = token;
+    while (token != NULL) /* stop when the string has end*/
+    {
+        /*compere the part of the string, and in function of his name, it stores his value in the right field*/
+        if (!strcmp(token, "id"))
+        {
+            token = strtok(NULL, ':');
+            vertex->id = atol(token);
+        }
+        else if (!strcmp(token, "tag"))
+        {
+            token = strtok(NULL, ':');
+            strcpy(vertex->tag, token);
+        }
+        else if (!strcmp(token, "state"))
+        {
+            token = strtok(NULL, ':');
+            vertex->state = token;
+        }
+
+        token = strtok(NULL, ':');
+    }
+
+    return vertex;
 }
 
 void vertex_free(void *v)
@@ -195,4 +209,50 @@ Status vertex_setState(Vertex *v, const Label state)
     v->state = state;
 
     /*Clean exit.*/
+}
+
+int vertex_cmp(const void *v1, const void *v2)
+{
+    Vertex * 
+    /*Checks the parameters.*/
+    if (!v1 || !v2)
+    {
+        return 0;
+    }
+    /*Compares the id.*/
+    if (v1->id == v2->id)
+    {
+        /*Compares the tags.*/
+        return strcmp(v1->tag, v2->tag);
+    }
+    else
+    {
+        /*Returns the id difference.*/
+        return (v1->id) - (v2->id);
+    }
+}
+
+void *vertex_copy(const void *src)
+{
+    void *vertex;
+
+    if (!src)
+    {
+        return NULL;
+    }
+
+    return vertex;
+};
+
+int vertex_print(FILE *pf, const void *v)
+{
+    /*Checks the parameters.*/
+    if (!pf || !v)
+    {
+        return -1;
+    }
+    /*Printts the information in the file.*/
+    fprintf(pf, "[%ld, %s, %d]", v->id, v->tag, v->state);
+
+    /*Clean exit*/
 }

@@ -164,7 +164,7 @@ Status vertex_setState (Vertex * v, const Label state);
  *
  * @return It returns an integer less than or greater than zero if
  * id of v1 is found,  respectively, to be less than or be greater 
- * than id of v2. If their are equal, thenreturns the result of 
+ * than id of v2. If their are equal, then returns the result of 
  * comparing their tags. In case of error, returns 0. 
  */
 int vertex_cmp (const void * v1, const void * v2);
