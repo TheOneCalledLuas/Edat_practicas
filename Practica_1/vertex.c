@@ -42,6 +42,25 @@ Status vertex_setField(Vertex *v, char *key, char *value)
 }
 
 /*----------------------------------------------------------------------------------------*/
+
+/**  rest of the functions in vertex.h **/
+Vertex *vertex_init()
+{
+    /*Memory allocation.*/
+    Vertex *vertex = (Vertex *)malloc(sizeof(Vertex));
+
+    /*Set the values to default state.*/
+    if (vertex)
+    {
+        vertex->id = 0;
+        vertex->state = WHITE;
+        vertex->tag[0] = '\0';
+    }
+
+    /*Returns the pointer.*/
+    return vertex;
+}
+
 Vertex *vertex_initFromString(char *descr)
 {
     char buffer[1024];
@@ -81,63 +100,6 @@ Vertex *vertex_initFromString(char *descr)
     return v;
 }
 
-/**  rest of the functions in vertex.h **/
-Vertex *vertex_init()
-{
-    /*Memory allocation.*/
-    Vertex *vertex = (Vertex *)malloc(sizeof(Vertex));
-
-    /*Set the values to default state.*/
-    if (vertex)
-    {
-        vertex->id = 0;
-        vertex->state = WHITE;
-        vertex->tag[0] = '\0';
-    }
-
-    /*Returns the pointer.*/
-    return vertex;
-}
-
-Vertex *vertex_initFromString(char *descr)
-{
-    char *token;
-    int i;
-    Vertex *vertex;
-
-    /*Control error*/
-    if (!descr || !(vertex = vertex_init()))
-    {
-        return NULL;
-    }
-
-    /*It took the first part of the string*/
-    token = strtok(descr, ':');
-    while (token != NULL) /* stop when the string has end*/
-    {
-        /*compere the part of the string, and in function of his name, it stores his value in the right field*/
-        if (!strcmp(token, "id"))
-        {
-            token = strtok(NULL, ':');
-            vertex->id = atol(token);
-        }
-        else if (!strcmp(token, "tag"))
-        {
-            token = strtok(NULL, ':');
-            strcpy(vertex->tag, token);
-        }
-        else if (!strcmp(token, "state"))
-        {
-            token = strtok(NULL, ':');
-            vertex->state = token;
-        }
-
-        token = strtok(NULL, ':');
-    }
-
-    return vertex;
-}
-
 void vertex_free(void *v)
 {
     /*Checks that the pointer isn't NULL and free it.*/
@@ -156,6 +118,18 @@ long vertex_getId(const Vertex *v)
     }
     /*Returns the value.*/
     return v->id;
+}
+
+const char *vertex_getTag(const Vertex *v)
+{
+    /*Checks the parameters.*/
+    if (!v)
+    {
+        return NULL;
+    }
+
+    /*Returns the value.*/
+    return (void *)(v->tag);
 }
 
 Label vertex_getState(const Vertex *v)
@@ -209,17 +183,19 @@ Status vertex_setState(Vertex *v, const Label state)
     v->state = state;
 
     /*Clean exit.*/
+    return OK;
 }
 
 int vertex_cmp(const void *v1, const void *v2)
 {
-    Vertex *vertex_1 = v1;
-    Vertex *vertex_2 = v2;
+    Vertex *vertex_1 = (Vertex *)v1;
+    Vertex *vertex_2 = (Vertex *)v2;
     /*Checks the parameters.*/
     if (!v1 || !v2)
     {
         return 0;
     }
+
     /*Compares the id.*/
     if (vertex_1->id == vertex_2->id)
     {
@@ -235,26 +211,28 @@ int vertex_cmp(const void *v1, const void *v2)
 
 void *vertex_copy(const void *src)
 {
-    Vertex *vertex = vertex_init();
+    Vertex *vertex;
 
-    if (!src)
+    if (!src || !(vertex = vertex_init()))
     {
         return NULL;
     }
 
-    return vertex;
-};
+    vertex->id = ((Vertex *)src)->id;
+    strcpy(vertex->tag, ((Vertex *)src)->tag);
+    vertex->state = ((Vertex *)src)->state;
+
+    return (void *)vertex;
+}
 
 int vertex_print(FILE *pf, const void *v)
 {
-    Vertex *vertex_1 = v;
+    Vertex *vertex_1 = (Vertex *)v;
     /*Checks the parameters.*/
     if (!pf || !v)
     {
         return -1;
     }
     /*Printts the information in the file.*/
-    fprintf(pf, "[%ld, %s, %d]", vertex_1->id, vertex_1->tag, vertex_1->state);
-
-    /*Clean exit*/
+    return fprintf(pf, "[%ld, %s, %d]", vertex_1->id, vertex_1->tag, vertex_1->state);
 }

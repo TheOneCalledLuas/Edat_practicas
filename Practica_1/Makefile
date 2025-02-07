@@ -1,6 +1,6 @@
 ########################################################
 CC=gcc
-CFLAGS= -g -Wall
+CFLAGS= -g -Wall -pedantic -ansi
 EJS = p1_e1 p1_e2 p1_e3
 ########################################################
 OBJECTSP1E1 = p1_e1.o vertex.o
