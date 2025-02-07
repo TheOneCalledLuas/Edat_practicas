@@ -213,28 +213,29 @@ Status vertex_setState(Vertex *v, const Label state)
 
 int vertex_cmp(const void *v1, const void *v2)
 {
-    Vertex * 
+    Vertex *vertex_1 = v1;
+    Vertex *vertex_2 = v2;
     /*Checks the parameters.*/
     if (!v1 || !v2)
     {
         return 0;
     }
     /*Compares the id.*/
-    if (v1->id == v2->id)
+    if (vertex_1->id == vertex_2->id)
     {
         /*Compares the tags.*/
-        return strcmp(v1->tag, v2->tag);
+        return strcmp(vertex_1->tag, vertex_2->tag);
     }
     else
     {
         /*Returns the id difference.*/
-        return (v1->id) - (v2->id);
+        return (vertex_1->id) - (vertex_2->id);
     }
 }
 
 void *vertex_copy(const void *src)
 {
-    void *vertex;
+    Vertex *vertex = vertex_init();
 
     if (!src)
     {
@@ -246,13 +247,14 @@ void *vertex_copy(const void *src)
 
 int vertex_print(FILE *pf, const void *v)
 {
+    Vertex *vertex_1 = v;
     /*Checks the parameters.*/
     if (!pf || !v)
     {
         return -1;
     }
     /*Printts the information in the file.*/
-    fprintf(pf, "[%ld, %s, %d]", v->id, v->tag, v->state);
+    fprintf(pf, "[%ld, %s, %d]", vertex_1->id, vertex_1->tag, vertex_1->state);
 
     /*Clean exit*/
 }
