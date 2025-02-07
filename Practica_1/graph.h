@@ -13,6 +13,11 @@
 
 #include "vertex.h"
 
+
+/**
+ * @brief cre
+ * 
+ */
 typedef struct _Graph Graph;
 
 /**

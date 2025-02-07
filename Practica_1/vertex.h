@@ -1,5 +1,3 @@
-
-
 /**
  * @file  vertex.h
  * @author Profesores Programación 2
@@ -11,9 +9,6 @@
  * 
  * @see
  */
-
-
-
 
 #ifndef VERTEX_H_
 #define VERTEX_H_
