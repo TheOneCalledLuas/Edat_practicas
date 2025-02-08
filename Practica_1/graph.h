@@ -13,6 +13,8 @@
 
 #include "vertex.h"
 
+#define MAX_VTX 4096
+#define MAX_WORD 1000
 
 /**
  * @brief cre

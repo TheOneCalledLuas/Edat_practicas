@@ -233,6 +233,7 @@ int vertex_print(FILE *pf, const void *v)
     {
         return -1;
     }
+    
     /*Printts the information in the file.*/
     return fprintf(pf, "[%ld, %s, %d]", vertex_1->id, vertex_1->tag, vertex_1->state);
 }

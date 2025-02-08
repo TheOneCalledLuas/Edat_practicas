@@ -29,7 +29,6 @@ int main()
         vertex_free((void *)vertex_2);
 
         return 1; /*error code*/
-
     }
 
     /*Set the vertex_2 to the arguments indicated*/
@@ -40,7 +39,6 @@ int main()
         vertex_free((void *)vertex_2);
 
         return 1; /*error code*/
-
     }
 
     /* Print the vertex_1 and vertex_2*/
@@ -51,7 +49,6 @@ int main()
         vertex_free((void *)vertex_2);
 
         return 1; /*error code*/
-
     }
     fprintf(stdout, "\n");
 
