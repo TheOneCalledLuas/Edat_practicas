@@ -1,3 +1,15 @@
+/**
+ * @file  vertex.c
+ * @authors Héctor García y Saúl López
+ * @date 8 February 2025
+ * @version 1.0
+ * @brief Implementacion of vertex.h
+ *
+ * @details
+ *
+ * @see
+ */
+
 #include "vertex.h"
 #include <string.h>
 
@@ -233,7 +245,7 @@ int vertex_print(FILE *pf, const void *v)
     {
         return -1;
     }
-    
+
     /*Printts the information in the file.*/
     return fprintf(pf, "[%ld, %s, %d]", vertex_1->id, vertex_1->tag, vertex_1->state);
 }

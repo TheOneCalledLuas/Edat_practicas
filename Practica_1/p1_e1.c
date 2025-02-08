@@ -10,6 +10,8 @@ int main()
     /*Init vertex_1*/
     if (!(vertex_1 = vertex_init())) /*Checks that the pointer isn't equal to NULL*/
     {
+        fprintf(stdout, "There has been an error initializating the vertex 1\n");
+
         return 1; /*error code*/
     }
 
@@ -17,6 +19,7 @@ int main()
     if (!(vertex_2 = vertex_init())) /*Checks that the pointer isn't equal to NULL*/
     {
         vertex_free((void *)vertex_1);
+        fprintf(stdout, "There has been an error initializating the vertex 2\n");
 
         return 1; /*error code*/
     }
@@ -28,6 +31,8 @@ int main()
         vertex_free((void *)vertex_1);
         vertex_free((void *)vertex_2);
 
+        fprintf(stdout, "There has been an error setting the vertex 1\n");
+
         return 1; /*error code*/
     }
 
@@ -38,6 +43,8 @@ int main()
         vertex_free((void *)vertex_1);
         vertex_free((void *)vertex_2);
 
+        fprintf(stdout, "There has been an error setting the vertex 2\n");
+
         return 1; /*error code*/
     }
 
@@ -47,6 +54,8 @@ int main()
         /*free the allocated memory in case of error*/
         vertex_free((void *)vertex_1);
         vertex_free((void *)vertex_2);
+
+        fprintf(stdout, "There has been an error printting the vertices\n");
 
         return 1; /*error code*/
     }
@@ -73,6 +82,8 @@ int main()
         vertex_free((void *)vertex_1);
         vertex_free((void *)vertex_2);
 
+        fprintf(stdout, "There has been an error copying the vertex 1 into the vertex 3\n");
+
         return 1; /*error code*/
     }
 
@@ -86,6 +97,8 @@ int main()
         vertex_free((void *)vertex_1);
         vertex_free((void *)vertex_2);
         vertex_free(vertex_3);
+
+        fprintf(stdout, "There has been an error printting the vertices\n");
 
         return 1; /*error code*/
     }

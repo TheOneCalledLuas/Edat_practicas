@@ -17,9 +17,9 @@ struct _Graph
  */
 
 /* Get the position of the array where the vertex is store*/
-int graph_get_vertex_at_with_id(Graph *g, long id);
+int graph_get_vertex_at_with_id(const Graph *g, long id);
 
-int graph_get_vertex_at_with_tag(Graph *g, char *tag);
+int graph_get_vertex_at_with_tag(const Graph *g, char *tag);
 
 /**
  * Implementation of public functions
@@ -89,7 +89,7 @@ Status graph_newVertex(Graph *g, char *desc)
 
 Status graph_newEdge(Graph *g, long orig, long dest)
 {
-    int position_vertex_orig, position_vertex_dest, i, id_aux;
+    int position_vertex_orig, position_vertex_dest;
 
     if (!g)
     {
@@ -146,14 +146,12 @@ int graph_getNumberOfEdges(const Graph *g)
 
 Bool graph_connectionExists(const Graph *g, long orig, long dest)
 {
-    int i;
-
     if (!g || graph_contains(g, orig) == FALSE || graph_contains(g, dest) == FALSE)
     {
         return FALSE;
     }
 
-    return g->connections[graph_get_vertex_at_with_id(g, orig)][graph_get_vertex_at_with_id(g, dest)];
+    return g->connections[graph_get_vertex_at_with_id((Graph *)g, orig)][graph_get_vertex_at_with_id((Graph *)g, dest)];
 }
 
 int graph_getNumberOfConnectionsFromId(const Graph *g, long id)
@@ -214,7 +212,7 @@ long *graph_getConnectionsFromId(const Graph *g, long id)
 
 int graph_getNumberOfConnectionsFromTag(const Graph *g, char *tag)
 {
-    int vertex_position, n_connections;
+    int vertex_position;
 
     if (!g || !tag || (vertex_position = graph_get_vertex_at_with_tag(g, tag)) < 0)
     {
@@ -261,7 +259,7 @@ int graph_print(FILE *pf, const Graph *g)
         if ((vertex_connected = graph_getConnectionsFromId(g, vertex_getId(g->vertices[i]))))
         {
             n_connections = graph_getNumberOfConnectionsFromId(g, vertex_getId(g->vertices[i]));
-            for (j = 0; i < n_connections; j++)
+            for (j = 0; j < n_connections; j++)
             {
                 /* No compruebo el resultado de la funcion graph_get_vertex_at_with_id, ya que si el program ha llegado hasta aqui es que el puntero esta bien y que existe el id de vertex*/
                 aux = vertex_print(pf, (void *)(g->vertices[graph_get_vertex_at_with_id(g, vertex_connected[j])]));
@@ -273,6 +271,8 @@ int graph_print(FILE *pf, const Graph *g)
                 n_characters += aux;
             }
         }
+        
+        free(vertex_connected);
 
         n_characters += fprintf(pf, "\n");
     }
@@ -291,7 +291,7 @@ Status graph_readFromFile(FILE *fin, Graph *g)
         return ERROR;
     }
 
-    fscanf(fin, "%d", n_vertices);
+    fscanf(fin, "%d", &n_vertices);
 
     for (i = 0; i < n_vertices; i++)
     {
@@ -303,7 +303,7 @@ Status graph_readFromFile(FILE *fin, Graph *g)
         }
     }
 
-    while (fscanf(fin, "%ld %ld", id_orig, id_dest) == 2)
+    while (fscanf(fin, "%ld %ld", &id_orig, &id_dest) == 2)
     {
         if (graph_newEdge(g, id_orig, id_dest) == ERROR)
         {
@@ -318,7 +318,7 @@ Status graph_readFromFile(FILE *fin, Graph *g)
  * Implementation of private functions
  */
 
-int graph_get_vertex_at_with_id(Graph *g, long id)
+int graph_get_vertex_at_with_id(const Graph *g, long id)
 {
     int i, position_vertex = -1;
     long id_aux;
@@ -341,7 +341,7 @@ int graph_get_vertex_at_with_id(Graph *g, long id)
     return position_vertex;
 }
 
-int graph_get_vertex_at_with_tag(Graph *g, char *tag)
+int graph_get_vertex_at_with_tag(const Graph *g, char *tag)
 {
     int i, vertex_position = -1;
 
