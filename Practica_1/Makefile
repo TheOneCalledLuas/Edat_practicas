@@ -53,5 +53,5 @@ runv:
 	valgrind --leak-check=full ./p1_e1
 	@echo ">>>>>>Running p1_e2 with valgrind"
 	valgrind --leak-check=full --track-origins=yes ./p1_e2 
-	@echo ">>>>>>Running p1_e2 with valgrind
+	@echo ">>>>>>Running p1_e3 with valgrind"
 	valgrind --leak-check=full ./p1_e3 g1.txt

@@ -99,7 +99,10 @@ Vertex *vertex_initFromString(char *descr)
     {
         p = strchr(token, ':');
         if (!p)
+        {
+            token = strtok(NULL, " \t\n");
             continue;
+        }
 
         *p = '\0';
         key = token;
