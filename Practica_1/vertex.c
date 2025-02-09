@@ -34,6 +34,7 @@ Vertex *vertex_initFromString(char *descr);
 
 Status vertex_setField(Vertex *v, char *key, char *value)
 {
+    /*Checks the parameters.*/
     if (!key || !value)
         return ERROR;
 

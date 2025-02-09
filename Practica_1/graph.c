@@ -16,9 +16,10 @@ struct _Graph
  * Private functions
  */
 
-/* Get the position of the array where the vertex is store*/
+/* Get the position of the array where the vertex is stored  by using the id.*/
 int graph_get_vertex_at_with_id(const Graph *g, long id);
 
+/* Get the position of the array where the vertex is stored  by using the tag.*/
 int graph_get_vertex_at_with_tag(const Graph *g, char *tag);
 
 /**
@@ -59,18 +60,20 @@ Status graph_newVertex(Graph *g, char *desc)
     int i;
     long id_vertex;
 
+    /*Checks the parameters.*/
     if (!g || !desc)
     {
         return ERROR;
     }
 
+    /*tries to read tthe vertex information.*/
     if (!(vertex = vertex_initFromString(desc)))
     {
         return ERROR;
     }
 
+    /*Asures that there's no vertex with the same id.*/
     id_vertex = vertex_getId(vertex);
-
     for (i = 0; i < g->num_vertices; i++)
     {
         if (vertex_getId(g->vertices[i]) == id_vertex)
@@ -80,7 +83,7 @@ Status graph_newVertex(Graph *g, char *desc)
             return ERROR;
         }
     }
-
+    /*Adds the vertex to the graph.*/
     g->vertices[g->num_vertices] = vertex;
     (g->num_vertices)++;
 
@@ -91,6 +94,7 @@ Status graph_newEdge(Graph *g, long orig, long dest)
 {
     int position_vertex_orig, position_vertex_dest;
 
+    /*Checks the parameters (pointers and Ids).*/
     if (!g)
     {
         return ERROR;
@@ -101,9 +105,11 @@ Status graph_newEdge(Graph *g, long orig, long dest)
         return ERROR;
     }
 
+    /*Adds the edge.*/
     g->connections[position_vertex_orig][position_vertex_dest] = TRUE;
     g->num_edges++;
 
+    /*Clean exit.*/
     return OK;
 }
 
@@ -111,6 +117,7 @@ Bool graph_contains(const Graph *g, long id)
 {
     long position_vertex;
 
+    /*Checks the parameters.*/
     if (!g)
     {
         return FALSE;
@@ -181,6 +188,7 @@ long *graph_getConnectionsFromId(const Graph *g, long id)
     long *vertex_connected;
     int i, position_vertex, n_connections, j;
 
+    /*Checks the parameters.*/
     if (!g || graph_contains(g, id) == FALSE)
     {
         return NULL;
@@ -190,7 +198,7 @@ long *graph_getConnectionsFromId(const Graph *g, long id)
     {
         return NULL;
     }
-
+    /*Allocates memory.*/
     if (!(vertex_connected = malloc(n_connections * sizeof(long))))
     {
         return NULL;
@@ -198,7 +206,7 @@ long *graph_getConnectionsFromId(const Graph *g, long id)
 
     position_vertex = graph_get_vertex_at_with_id(g, id);
 
-    for (i = 0, j = 0; i < n_connections; i++)
+    for (i = 0, j = 0; j < n_connections; i++)
     {
         if (g->connections[position_vertex][i] == TRUE)
         {
@@ -240,38 +248,43 @@ int graph_print(FILE *pf, const Graph *g)
     long n_connections, n_characters = 0, aux;
     int i, j;
 
+    /*Checks the arguments.*/
     if (!pf || !g)
     {
         return -1;
     }
-
+    /*Prints the graph vertex by vertex.*/
     for (i = 0; i < g->num_vertices; i++)
     {
+        /*Prints the vertex.*/
         aux = vertex_print(pf, (void *)g->vertices[i]);
         if (aux < 0)
         {
             return -1;
         }
 
+        /*Adds the printed characters to the count.*/
         n_characters += aux;
         n_characters += fprintf(pf, ": ");
 
+        /*Prints the vertex which are connected to this one.*/
         if ((vertex_connected = graph_getConnectionsFromId(g, vertex_getId(g->vertices[i]))))
         {
             n_connections = graph_getNumberOfConnectionsFromId(g, vertex_getId(g->vertices[i]));
             for (j = 0; j < n_connections; j++)
             {
-                /* No compruebo el resultado de la funcion graph_get_vertex_at_with_id, ya que si el program ha llegado hasta aqui es que el puntero esta bien y que existe el id de vertex*/
+                /* No compruebo el resultado de la funcion graph_get_vertex_at_with_id, ya que si el program ha llegado hasta aqui es que el puntero esta bien y que existe el id de vertex.*/
                 aux = vertex_print(pf, (void *)(g->vertices[graph_get_vertex_at_with_id(g, vertex_connected[j])]));
+                fprintf(pf, " ");
                 if (aux < 0)
                 {
                     return -1;
                 }
 
-                n_characters += aux;
+                n_characters += aux + 1;
             }
         }
-        
+
         free(vertex_connected);
 
         n_characters += fprintf(pf, "\n");
@@ -291,7 +304,12 @@ Status graph_readFromFile(FILE *fin, Graph *g)
         return ERROR;
     }
 
+    /*Reads the number of vertex in the graph.*/
     fscanf(fin, "%d", &n_vertices);
+
+    /*Skips the rest of the first line.*/
+    rewind(fin);
+    fgets(str, MAX_WORD, fin);
 
     for (i = 0; i < n_vertices; i++)
     {
