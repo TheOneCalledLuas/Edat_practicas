@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     /*Graph initialisation.*/
     if (!(graph = graph_init()))
     {
-        printf("error while creating the graph.");
+        printf("Error while creating the graph.");
         fclose(file);
         return 1;
     }
