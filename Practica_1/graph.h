@@ -17,7 +17,7 @@
 #define MAX_WORD 1000
 
 /**
- * @brief cre
+ * @brief Graph strucutre.
  * 
  */
 typedef struct _Graph Graph;
@@ -183,7 +183,6 @@ long *graph_getConnectionsFromTag(const Graph *g, char *tag);
  * @return The number of characters printed, or -1 if there is any error.
  */
 int graph_print (FILE *pf, const Graph *g);
-
 
 /**
  * @brief Reads a graph definition from a text file.
