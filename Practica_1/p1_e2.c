@@ -21,6 +21,7 @@ int main()
     fprintf(stdout, "Inserting Madrid... result...: ");
     if (graph_newVertex(graph, "tag:Madrid id:111 state:WHITE") == ERROR)
     {
+        /* If an error occurs.*/
         fprintf(stdout, "0, there has been an error\n");
         graph_free(graph);
 
