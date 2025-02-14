@@ -79,9 +79,9 @@ Vertex *vertex_init();
 Vertex *vertex_initFromString(char *descr);
 
 /**
- * @brief Destructor. Free the dynamic memory reserved for a vertex .
+ * @brief Destructor. Free the dynamic memory reserved for a vertex.
  *
- * @param v Vertex to free
+ * @param v Vertex to free.
  */
 void vertex_free(void *v);
 
